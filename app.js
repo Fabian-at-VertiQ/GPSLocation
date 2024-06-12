@@ -23,5 +23,8 @@ document.addEventListener("DOMContentLoaded", (e)=>{
         const longitude = position.coords.longitude;
     
         lat.textContent = `lat: ${latitude} - log: ${longitude}`;
-  }
+    }
+    function error() {
+        lat.textContent = "Unable to retrieve your location";
+    }
 });
