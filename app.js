@@ -15,6 +15,13 @@ document.addEventListener("DOMContentLoaded", (e)=>{
     }
 
     location.addEventListener("click", (e) =>{
-        lat.value = GeolocationCoordinates.latitude;
+        navigator.geolocation.getCurrentPosition(success, error);
     });
+
+    function success(position) {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+    
+        lat.textContent = `lat: ${latitude} - log: ${longitude}`;
+  }
 });
