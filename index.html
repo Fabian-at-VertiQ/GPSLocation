@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Capture GPS location</title>
+        <link rel="manifest" href="GPS.webmanifest" />
+        <script src="app.js" defer></script>
+        <style>
+            label{
+                display:block;
+                margin-top:20px;
+            }
+
+            #ClearAllWarning{
+                border:0;
+                border-top: solid rgb(245, 111, 111) 25px ;
+                background-color: hsl(225, 44%, 96%);
+            }
+
+            #ClearAllWarning input{
+                margin: 20px 10px 5px 10px;
+            }
+
+            ::backdrop {
+                background-color: rgb(107, 93, 102);
+                opacity: 0.60;
+                }
+        </style>
+    </head>
+    <body>
+        <label for="Location">Get current coordenates</label>
+        <input id="Location" type="button" value="Get Location" />
+        <p id="lat"></p>
+        <input type="button" value="Clear all stored data" onclick="showDlg();" />
+        <dialog id="ClearAllWarning">
+            <label for="ResetStorage">You are about to delete all stored locations on this device<br/>This action cannot be undone</label>
+            <input type="button" value="Cancel" onclick="hideDlg();" />
+            <input id="ResetStorage" type="button" value="Clear All" />
+        </dialog>
+        <br />
+        <br />
+        <input type="button" value="Send stored data"   />
+        <p>@StoredData</p>
+        <br/>
+
+
+    </body>
+   
+</html>
