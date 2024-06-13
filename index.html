@@ -32,10 +32,10 @@
         <label for="Location">Get current coordenates</label>
         <input id="Location" type="button" value="Get Location" />
         <p id="lat"></p>
-        <input type="button" value="Clear all stored data" onclick="showDlg();" />
+        <input id="ClearData" type="button" value="Clear all stored data" />
         <dialog id="ClearAllWarning">
             <label for="ResetStorage">You are about to delete all stored locations on this device<br/>This action cannot be undone</label>
-            <input type="button" value="Cancel" onclick="hideDlg();" />
+            <input id="HideWarning" type="button" value="Cancel"  />
             <input id="ResetStorage" type="button" value="Clear All" />
         </dialog>
         <br />
