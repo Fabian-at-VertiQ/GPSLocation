@@ -8,7 +8,7 @@
     "orientation": "portrait-primary",
     "icons": [
       {
-        "src": "GPS pin.svg",
+        "src": "GPS pin map.svg",
         "type": "image/svg+xml", 
         "sizes": "any",
         "purpose": "any"
