@@ -8,8 +8,10 @@
     "orientation": "portrait-primary",
     "icons": [
       {
-        "src": "/GPSPin.png",
-        "type": "image/jpg", "sizes": "72x72"
+        "src": "GPS pin.svg",
+        "type": "image/svg+xml", 
+        "sizes": "any",
+        "purpose": "any"
       }
       
     ]
