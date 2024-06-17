@@ -7,6 +7,9 @@
         <link rel="manifest" href="GPS.webmanifest" />
         <script src="app.js" defer></script>
         <style>
+            *{
+                font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            }
             label{
                 display:block;
                 margin-top:20px;
@@ -26,23 +29,72 @@
                 background-color: rgb(107, 93, 102);
                 opacity: 0.60;
                 }
+
+            .GPSPin {
+                background-image: url(GPSPin.jpg);
+                background-repeat: no-repeat;
+                background-position: 0 3px;
+                background-color: transparent;
+                padding: 4px 0 8px 25px;
+                border: 1px solid lightgray;
+                height: 30px;
+                width: 150px;
+                text-align:left;
+                margin-top:6px;
+                display:inline;
+            }
+
         </style>
     </head>
     <body>
-        <label for="Location">Get current coordenates</label>
-        <input id="Location" type="button" value="Get Location" />
-        <p id="lat"></p>
-        <input id="ClearData" type="button" value="Clear all stored data" />
+        <h1>Capture current GPS location</h1>
+
+        <p>Welcome <span id="DisplayUserId"></span></p>
+        
+        <label for="CaseNum">CaseNum</label>
+        <input id="CaseNum" type="text" />
+        <br/>
+        <label for="Decedent">Decedent's name</label>
+        <input id="Decedent" type="text" />
+        <br/>
+        <label for="Incident">Get GPS coordinates for:</label>
+        <button id="Incident" type="button"  class="GPSPin">Incident location</button>
+        <span id="LocationIncident" class="loc"></span>
+        <br />
+        <button id="Home" type="button" class="GPSPin">Decedent's home</button>
+        <span id="LocationHome" class="loc"></span>
+        <br />
+        <button id="Death" type="button" class="GPSPin">Death location </button>
+        <span id="LocationDeath" class="loc"></span>
+        <br />
+        <hr />
+        
+        <input id="ClearAll" type="button" value="Clear all stored data" />
+
+        <dialog id="UserWelcome">
+            <h2>Welcome</h2>
+            <label for="UserId">Please enter your name to continue, this will help to identify the captured locations when syncing them back into the application. *</label>
+            <input id="UserId" type="text" required />
+            <input id="CloseWelcome" type="button" value="Close" />
+            
+        </dialog>
+
         <dialog id="ClearAllWarning">
             <label for="ResetStorage">You are about to delete all stored locations on this device<br/>This action cannot be undone</label>
             <input id="HideWarning" type="button" value="Cancel"  />
             <input id="ResetStorage" type="button" value="Clear All" />
+        </dialog>    
+        
+        <dialog id="NoLocalStorage">
+            <h2>You cannot use this app on your device.</h2>
+                <label>Your device/browser current configuration does not allow to store data while off-line.</label>
         </dialog>
         <br />
         <br />
-        <input type="button" value="Send stored data"   />
-        <p>@StoredData</p>
-        <br/>
+        <input id="SendStoredData" type="button" value="Send stored data"  />
+
+        <p id="StoredData"></p>
+
 
 
     </body>

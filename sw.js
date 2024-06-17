@@ -1,7 +1,11 @@
-const cacheName = "GPS-v1";
+const cacheName = "GPS-v3";
 const appShellFiles = [
   "/index.html",
-  "/app.js"
+  "/app.js",
+  "/GPS pin.svg",
+  "/GPS pin map.svg",
+  "/favicon.ico",
+  "sw.js"
 ];
 
 self.addEventListener("install", (e) => {
