@@ -33,6 +33,8 @@ document.addEventListener("DOMContentLoaded", (e)=>{
     const locDisplay = [locationIncident, locationHome, locationDeath];
 
     let data = {};
+    let timeoutId = 0;
+
     //Check if LocalStorage is available
     if(isStorageAvailable()){
         //Check if there is a user id in the LocalStorage otherwise ask for it
@@ -68,8 +70,10 @@ document.addEventListener("DOMContentLoaded", (e)=>{
                 if("Locations" in data[tmpCaseNum]){
                     let loc = ["incident", "home", "death"];
                     for(let n= 0; n<3; n++){
-                        let tmpLoc = data[tmpCaseNum]["Locations"][loc[n]];
-                        locDisplay[n].textContent = tmpLoc === null ? "" : `Lat: ${tmpLoc["Latitud"]}\r\nLong: ${tmpLoc["Longitud"]}`;
+                        if(loc[n] in data[tmpCaseNum]["Locations"]){
+                            let tmpLoc = data[tmpCaseNum]["Locations"][loc[n]];
+                            locDisplay[n].textContent = tmpLoc === null ? "" : `Lat: ${tmpLoc["Latitud"]}\r\nLong: ${tmpLoc["Longitud"]}`;
+                        }
                     }
                 }
                 else{
@@ -95,13 +99,22 @@ document.addEventListener("DOMContentLoaded", (e)=>{
             });
         });
 
+        function showWaiting(){
+            document.querySelectorAll('*').forEach((e) => {
+                e.style.cursor = 'wait';
+            });
+        }
+
         incident.addEventListener("click", (e) => {
+            timeoutId = setTimeout(showWaiting(), 500);
             navigator.geolocation.getCurrentPosition(incidentLocation, error);
         });
         home.addEventListener("click", (e) => {
+            timeoutId = setTimeout(showWaiting(), 500);
             navigator.geolocation.getCurrentPosition(homeLocation, error);
         });
         death.addEventListener("click", (e) => {
+            timeoutId = setTimeout(showWaiting(), 500);
             navigator.geolocation.getCurrentPosition(deathLocation, error);
         });
 
@@ -119,6 +132,11 @@ document.addEventListener("DOMContentLoaded", (e)=>{
         }
             
         function StoreLocation(type, locationDisplay, latitude, longitude){
+            clearTimeout(timeoutId);
+            document.querySelectorAll('*').forEach((e) => {
+                e.style.cursor = 'default';
+            });
+
             if(caseNum.value === ""){
                 warningNoCase.showModal();
                 return;
