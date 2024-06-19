@@ -65,7 +65,7 @@
                 font-size: 14pt;
                 margin: 2px 0 20px 25px;
                 height: 16pt;
-                white-space: pre-line;
+                white-space: pre;
             }
             hr{
                 margin: 40px 0 20px -20px;
@@ -73,6 +73,13 @@
             .delete{
                 background: transparent;
                 border: none;
+            }
+
+            #Wait {
+                border: none !important;
+            }
+            #Wait::backdrop {
+                background-color: hsla(220, 100%, 100%, 0.123) ;
             }
         </style>
     </head>
@@ -129,7 +136,9 @@
             <h2>You cannot use this app on your device.</h2>
                 <label>Your device/browser current configuration does not allow to store data while off-line.</label>
         </dialog>
-
+        <dialog id="Wait">
+            <img src="loading.gif" alt="loading" />
+        </dialog>
     </body>
    
 </html>

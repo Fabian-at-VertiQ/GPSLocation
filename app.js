@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", (e)=>{
     const sendStoredData = document.getElementById("SendStoredData");
     const storedData = document.getElementById("StoredData");
     const noLocalStorage = document.getElementById("NoLocalStorage");
-
+    const wait = document.getElementById("Wait");
     const locDisplay = [locationIncident, locationHome, locationDeath];
 
     let data = {};
@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", (e)=>{
                     for(let n= 0; n<3; n++){
                         if(loc[n] in data[tmpCaseNum]["Locations"]){
                             let tmpLoc = data[tmpCaseNum]["Locations"][loc[n]];
-                            locDisplay[n].textContent = tmpLoc === null ? "" : `Lat: ${tmpLoc["Latitud"]}\r\nLong: ${tmpLoc["Longitud"]}`;
+                            locDisplay[n].textContent = tmpLoc === null ? "" : FormatLatLong(tmpLoc["Latitud"], tmpLoc["Longitud"]);
                         }
                     }
                 }
@@ -85,6 +85,13 @@ document.addEventListener("DOMContentLoaded", (e)=>{
                 ClearLocations();
             }
         });
+
+        function FormatLatLong(latitude, longitude){
+            let latParts = latitude.toString().split(".");
+            let longParts = longitude.toString().split(".");
+            
+            return `Lat:  ${latParts[0].padStart(4)}.${latParts[1]}\r\nLong: ${longParts[0].padStart(4)}.${longParts[1]}`
+        }
 
         deleteLocations.forEach((button) => {
             button.addEventListener("click", (e)=>{
@@ -100,21 +107,20 @@ document.addEventListener("DOMContentLoaded", (e)=>{
         });
 
         function showWaiting(){
-            document.querySelectorAll('*').forEach((e) => {
-                e.style.cursor = 'wait';
-            });
+            wait.showModal();
         }
 
         incident.addEventListener("click", (e) => {
-            timeoutId = setTimeout(showWaiting(), 500);
+            timeoutId = setTimeout(showWaiting(), 800);
+            //setTimeout(()=>{navigator.geolocation.getCurrentPosition(incidentLocation, error)}, 2000);
             navigator.geolocation.getCurrentPosition(incidentLocation, error);
         });
         home.addEventListener("click", (e) => {
-            timeoutId = setTimeout(showWaiting(), 500);
+            timeoutId = setTimeout(showWaiting(), 800);
             navigator.geolocation.getCurrentPosition(homeLocation, error);
         });
         death.addEventListener("click", (e) => {
-            timeoutId = setTimeout(showWaiting(), 500);
+            timeoutId = setTimeout(showWaiting(), 800);
             navigator.geolocation.getCurrentPosition(deathLocation, error);
         });
 
@@ -133,15 +139,13 @@ document.addEventListener("DOMContentLoaded", (e)=>{
             
         function StoreLocation(type, locationDisplay, latitude, longitude){
             clearTimeout(timeoutId);
-            document.querySelectorAll('*').forEach((e) => {
-                e.style.cursor = 'default';
-            });
+            wait.close(); 
 
             if(caseNum.value === ""){
                 warningNoCase.showModal();
                 return;
             }
-            locationDisplay.textContent = `Lat: ${latitude}\r\nLong: ${longitude}`;
+            locationDisplay.textContent = FormatLatLong(latitude, longitude);
             data = JSON.parse(window.localStorage.getItem("cases"));
 
             if(data === null){
@@ -190,7 +194,11 @@ document.addEventListener("DOMContentLoaded", (e)=>{
         });
 
         if ("serviceWorker" in navigator) {
-            navigator.serviceWorker.register("sw.js");
+            navigator.serviceWorker
+                .register("sw.js")
+                .then((registration) =>{
+                    registration.update();
+                });
         }
               
 
