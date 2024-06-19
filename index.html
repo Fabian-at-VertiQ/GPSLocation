@@ -9,10 +9,26 @@
         <style>
             *{
                 font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 12pt;
+            }
+            html,body{
+                margin: 0;
+                padding: 0;
+            }
+            header{
+                font-size: 20pt;
+                text-align: center;
+                color: white;
+                background-color: rgb(0, 69, 230);
+                margin: 0 0 10px 0;
             }
             label{
                 display:block;
                 margin-top:20px;
+            }
+
+            .container{
+                padding-left: 20px;
             }
 
             #ClearAllWarning{
@@ -38,62 +54,78 @@
                 padding: 4px 0 8px 25px;
                 border: 1px solid lightgray;
                 height: 30px;
-                width: 150px;
+                width: 170px;
                 text-align:left;
                 margin-top:6px;
                 display:inline;
             }
-
+            .loc{
+                font-family: monospace;
+                font-size: 14pt;
+                margin: 2px 0 15px 0;
+                height: 16pt;
+            }
+            hr{
+                margin: 20px 0 20px -20px;
+            }
+            .delete{
+                background: transparent;
+                border: none;
+            }
         </style>
     </head>
     <body>
-        <h1>Capture current GPS location</h1>
+        <header>Capture GPS location</header>
+        <div class="container">
+            <p>Welcome <span id="DisplayUserId"></span></p>
+            
+            <label for="CaseNum">CaseNum *</label>
+            <input id="CaseNum" type="text" />
+            <br/>
+            <label for="Decedent">Decedent's name</label>
+            <input id="Decedent" type="text" />
+            <br/>
+            <label for="Incident">Get GPS coordinates for:</label>
+            <button id="Incident" type="button"  class="GPSPin">Incident location</button>
+            <button id="DeleteIncident" type="button" data-button="incident" class="delete"><img src="delete.png" alt="Delete incident location" data-button="incident"/></button>
+            <p id="LocationIncident" class="loc" data-button="incident"></p>
+            <button id="Home" type="button" class="GPSPin">Decedent's home</button>
+            <button id="DeleteHome" type="button" data-button="home" class="delete"><img src="delete.png" alt="Delete incident location" data-button="home" /></button>
+            <p id="LocationHome" class="loc" data-button="home"></p>
+            <button id="Death" type="button" class="GPSPin">Death location </button>
+            <button id="DeleteDeath" type="button" data-button="death" class="delete"><img src="delete.png" alt="Delete incident location" data-button="death"/></button>
+            <p id="LocationDeath" class="loc" data-button="death"></p>
+            <hr />
+            
+            <input id="ClearAll" type="button" value="Clear all stored data" />
+            <br />
+            <br />
+            <input id="SendStoredData" type="button" value="Send stored data"  />
 
-        <p>Welcome <span id="DisplayUserId"></span></p>
-        
-        <label for="CaseNum">CaseNum</label>
-        <input id="CaseNum" type="text" />
-        <br/>
-        <label for="Decedent">Decedent's name</label>
-        <input id="Decedent" type="text" />
-        <br/>
-        <label for="Incident">Get GPS coordinates for:</label>
-        <button id="Incident" type="button"  class="GPSPin">Incident location</button>
-        <span id="LocationIncident" class="loc"></span>
-        <br />
-        <button id="Home" type="button" class="GPSPin">Decedent's home</button>
-        <span id="LocationHome" class="loc"></span>
-        <br />
-        <button id="Death" type="button" class="GPSPin">Death location </button>
-        <span id="LocationDeath" class="loc"></span>
-        <br />
-        <hr />
-        
-        <input id="ClearAll" type="button" value="Clear all stored data" />
-
+            <p id="StoredData"></p>
+        </div>
         <dialog id="UserWelcome">
             <h2>Welcome</h2>
             <label for="UserId">Please enter your name to continue, this will help to identify the captured locations when syncing them back into the application. *</label>
             <input id="UserId" type="text" required />
             <input id="CloseWelcome" type="button" value="Close" />
-            
         </dialog>
 
+        <dialog id="WarningNoCase">
+            <h2>Please enter a CaseNum to be use as a reference before capturing a location!</h2>
+            <button id="HideWarningNoCase" type="button">Close</button>
+        </dialog>
         <dialog id="ClearAllWarning">
             <label for="ResetStorage">You are about to delete all stored locations on this device<br/>This action cannot be undone</label>
-            <input id="HideWarning" type="button" value="Cancel"  />
-            <input id="ResetStorage" type="button" value="Clear All" />
+            <button id="HideWarning" type="button">Cancel</button>
+            <button id="ResetStorage" type="button">Clear All</button>
         </dialog>    
         
         <dialog id="NoLocalStorage">
             <h2>You cannot use this app on your device.</h2>
                 <label>Your device/browser current configuration does not allow to store data while off-line.</label>
         </dialog>
-        <br />
-        <br />
-        <input id="SendStoredData" type="button" value="Send stored data"  />
-
-        <p id="StoredData"></p>
+        
 
 
 

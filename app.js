@@ -9,12 +9,17 @@ document.addEventListener("DOMContentLoaded", (e)=>{
     const locationIncident = document.getElementById("LocationIncident");
     const locationHome = document.getElementById("LocationHome");
     const locationDeath = document.getElementById("LocationDeath"); 
+    const deleteLocations = document.querySelectorAll("button.delete");
 
     const userWelcome = document.getElementById("UserWelcome");  
     const closeWelcome = document.getElementById("CloseWelcome");
     const userId = document.getElementById("UserId");
     const displayUserId = document.getElementById("DisplayUserId");
     const userIdRequired = document.getElementById("UserIdRequired");
+
+
+    const warningNoCase = document.getElementById("WarningNoCase");  
+    const hideWarningNoCase = document.getElementById("HideWarningNoCase");  
 
     const clearAll = document.getElementById("ClearAll");  
     const clearAllWarning = document.getElementById("ClearAllWarning");
@@ -48,6 +53,43 @@ document.addEventListener("DOMContentLoaded", (e)=>{
             }
         });
         
+        caseNum.addEventListener("change", (e)=>{
+            //check if the case already has data, if it does, show it
+            data = JSON.parse(window.localStorage.getItem("cases"));
+            let tmpCaseNum = e.target.value;
+            let locDisplay = [locationIncident, locationHome, locationDeath];
+            if(data !== null && tmpCaseNum in data){
+                decedent.value = data[tmpCaseNum]["Decedent"];
+                if("Locations" in data[tmpCaseNum]){
+                    let loc = ["incident", "home", "death"];
+                    for(let n= 0; n<3; n++){
+                        let tmpLoc = data[tmpCaseNum]["Locations"][loc[n]];
+                        locDisplay[n].textContent = tmpLoc === null ? "" : `Lat: ${tmpLoc["Latitud"]} - Long: ${tmpLoc["Longitud"]}`;
+                    }
+                }
+                else{
+                    locDisplay.forEach((l) => l.textContent = "");
+                }
+            }
+            else{
+                decedent.value = "";
+                locDisplay.forEach((l) => l.textContent = "");
+            }
+        });
+
+        deleteLocations.forEach((button) => {
+            button.addEventListener("click", (e)=>{
+                let button = e.target.dataset.button;
+                let p = document.querySelector(`p[data-button="${button}"`);
+                if(p.textContent !== ""){
+                    p.textContent = "";
+                    data = JSON.parse(window.localStorage.getItem("cases"));
+                    delete data[caseNum.value]["Locations"][button];
+                    window.localStorage.setItem("cases", JSON.stringify(data));
+                }
+            });
+        });
+
         incident.addEventListener("click", (e) => {
             navigator.geolocation.getCurrentPosition(incidentLocation, error);
         });
@@ -72,6 +114,10 @@ document.addEventListener("DOMContentLoaded", (e)=>{
         }
             
         function StoreLocation(type, locationDisplay, latitude, longitude){
+            if(caseNum.value === ""){
+                warningNoCase.showModal();
+                return;
+            }
             locationDisplay.textContent = `lat: ${latitude} - log: ${longitude}`;
             data = JSON.parse(window.localStorage.getItem("cases"));
 
@@ -99,6 +145,10 @@ document.addEventListener("DOMContentLoaded", (e)=>{
             
             window.localStorage.setItem("cases", JSON.stringify(data));
         };
+
+        hideWarningNoCase.addEventListener("click", (e) => {
+            warningNoCase.close();
+        });
 
         clearAll.addEventListener("click", (e) =>{
             clearAllWarning.showModal();
