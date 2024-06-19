@@ -30,6 +30,8 @@ document.addEventListener("DOMContentLoaded", (e)=>{
     const storedData = document.getElementById("StoredData");
     const noLocalStorage = document.getElementById("NoLocalStorage");
 
+    const locDisplay = [locationIncident, locationHome, locationDeath];
+
     let data = {};
     //Check if LocalStorage is available
     if(isStorageAvailable()){
@@ -53,27 +55,30 @@ document.addEventListener("DOMContentLoaded", (e)=>{
             }
         });
         
+        function ClearLocations(){
+            locDisplay.forEach((l) => l.textContent = "");
+        }
+
         caseNum.addEventListener("change", (e)=>{
             //check if the case already has data, if it does, show it
             data = JSON.parse(window.localStorage.getItem("cases"));
             let tmpCaseNum = e.target.value;
-            let locDisplay = [locationIncident, locationHome, locationDeath];
             if(data !== null && tmpCaseNum in data){
                 decedent.value = data[tmpCaseNum]["Decedent"];
                 if("Locations" in data[tmpCaseNum]){
                     let loc = ["incident", "home", "death"];
                     for(let n= 0; n<3; n++){
                         let tmpLoc = data[tmpCaseNum]["Locations"][loc[n]];
-                        locDisplay[n].textContent = tmpLoc === null ? "" : `Lat: ${tmpLoc["Latitud"]} - Long: ${tmpLoc["Longitud"]}`;
+                        locDisplay[n].textContent = tmpLoc === null ? "" : `Lat: ${tmpLoc["Latitud"]}\r\nLong: ${tmpLoc["Longitud"]}`;
                     }
                 }
                 else{
-                    locDisplay.forEach((l) => l.textContent = "");
+                    ClearLocations()
                 }
             }
             else{
                 decedent.value = "";
-                locDisplay.forEach((l) => l.textContent = "");
+                ClearLocations();
             }
         });
 
@@ -118,7 +123,7 @@ document.addEventListener("DOMContentLoaded", (e)=>{
                 warningNoCase.showModal();
                 return;
             }
-            locationDisplay.textContent = `lat: ${latitude} - log: ${longitude}`;
+            locationDisplay.textContent = `Lat: ${latitude}\r\nLong: ${longitude}`;
             data = JSON.parse(window.localStorage.getItem("cases"));
 
             if(data === null){
@@ -156,6 +161,9 @@ document.addEventListener("DOMContentLoaded", (e)=>{
 
         resetStorage.addEventListener("click", (e) =>{
             window.localStorage.setItem("cases", "{}");
+            caseNum.value = "";
+            decedent.value = "";
+            ClearLocations();
             clearAllWarning.close();
         });
 
