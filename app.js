@@ -112,8 +112,8 @@ document.addEventListener("DOMContentLoaded", (e)=>{
 
         incident.addEventListener("click", (e) => {
             timeoutId = setTimeout(showWaiting(), 800);
-            //setTimeout(()=>{navigator.geolocation.getCurrentPosition(incidentLocation, error)}, 2000);
-            navigator.geolocation.getCurrentPosition(incidentLocation, error);
+            setTimeout(()=>{navigator.geolocation.getCurrentPosition(incidentLocation, error)}, 6000);
+            //navigator.geolocation.getCurrentPosition(incidentLocation, error);
         });
         home.addEventListener("click", (e) => {
             timeoutId = setTimeout(showWaiting(), 800);

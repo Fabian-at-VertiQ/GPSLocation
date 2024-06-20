@@ -76,11 +76,38 @@
             }
 
             #Wait {
-                border: none !important;
+                border: transparent !important;
+                background-color: transparent;
             }
             #Wait::backdrop {
-                background-color: hsla(220, 100%, 100%, 0.123) ;
+                background-color: hsla(0, 0%, 69%, 0.6); ;
             }
+
+            .rotating-dish {
+                animation: rotate 1s linear infinite alternate; /* Animation definition */
+                transform-origin: 25px 36px;
+            }
+            
+            @keyframes rotate {
+                from { transform: rotate(-30deg); }
+                to { transform: rotate(-15deg); }
+            }
+            #WaitingGPSSignal{
+                width:100vw;
+                height: 100vh;
+                background-color: transparent;
+            }
+            #satellite{
+                stroke-width:.8;
+                fill: white;
+                stroke: blue;
+            }
+            .signal1{
+                transform: rotate(-15deg);
+                transform-origin: 25px 36px;
+            }
+
+
         </style>
     </head>
     <body>
@@ -137,7 +164,53 @@
                 <label>Your device/browser current configuration does not allow to store data while off-line.</label>
         </dialog>
         <dialog id="Wait">
-            <img src="loading.gif" alt="loading" />
+            <svg id="WaitingGPSSignal" viewBox="-50 -100 200 200" preserveAspectRatio="xMinYMin" xmlns="http://www.w3.org/2000/svg">
+                <g id="satellite">
+                    <g id="base">
+                        <path
+                            d ="M15,40
+                                l-10,30
+                                l15,0
+                                l-2,-30
+                                z">
+                        </path>
+                        <rect 
+                            x="2"
+                            y="70"
+                            width="21"
+                            height="2">
+                        </rect>
+                    </g>
+                    <g class="rotating-dish" >
+                        <path d="M32,30
+                                l8 6 -8 6" />
+                        <circle cx="40" cy="36" r="2" />
+                        <path 
+                            d = "M32,12
+                                a20,25 0 1,0 0,50
+                                M32,12 l0,50" />
+                    </g>                  
+                    <g class="rotating-dish">
+                        <path id="signal1" class="signal"
+                            d = "M44 34
+                                a4,4 0 0,1 0,4
+                                M48 32
+                                a8,8 0 0,1 0,8">
+                            <animate attributeName="opacity"
+                                from="1" to="0" dur=".5s" repeatCount="indefinite" />
+                        </path>
+        
+                        <path id="signal2" class="signal"
+                            d = "M46 33
+                                a6,6 0 0,1 0,6
+                                M50 30
+                                a11,11 0 0,1 0,11" >
+                            <animate attributeName="opacity"
+                                from="0" to="1" dur=".5s" delay=".5s" repeatCount="indefinite" />
+                        </path>
+                    </g>
+                </g>
+            </svg>
         </dialog>
     </body>
    
