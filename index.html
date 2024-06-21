@@ -10,11 +10,20 @@
             *{
                 font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                 font-size: 12pt;
+                overflow: hidden;
             }
             html,body{
                 margin: 0;
                 padding: 0;
             }
+
+            .container{
+                display: grid;
+                grid-template-columns: repeat(3, 1fr) 200px;
+                grid-template-rows: 48px 1fr 12pt;
+                height: 100vh;
+            }
+
             header{
                 font-size: 20pt;
                 text-align: center;
@@ -22,15 +31,27 @@
                 background-color: rgb(0, 69, 230);
                 margin: 0 0 10px 0;
                 padding: 3px 0 5px 0;
+                height: 40px;
+                grid-column: 1 / 5;
+                grid-row: 1 /1;
             }
+
             label{
                 display:block;
                 margin-top:20px;
             }
 
-            .container{
+            .caseData{
                 padding-left: 20px;
+                grid-column: 1 / 5;
+                grid-row: 2 / 2;
             }
+
+            footer{
+                grid-column: 1 / 5;
+                grid-row: 3 / 3;
+            }
+
             .version{
                 font-size: 10pt;
                 margin: 2px 8px 2px 0;
@@ -42,14 +63,18 @@
                 padding: 0 8px 0 8px;
                 cursor: pointer;
             }
+            #MenuOverlay{
+                display: none;
+                grid-column: 1 / 4;
+                grid-row: 2 / 3;
+                background-color: hsla(0, 0%, 31%, 0.6);
+            }
             #Menu{
                 display: none;
-                position: absolute;
-                right: 0;
-                top:44px;
                 background-color: white;
                 border: 1px solid gray;
-                height: calc(100vh - 44px);
+                grid-column: 4 / 4;
+                grid-row: 2 / 2;
             }
             .menuItem{
                 display: block;
@@ -68,6 +93,9 @@
             }
             #SendStoredData{
                 background-image: url(upload.png);
+            }
+            #ShowStoredData{
+                background-image: url(ShowData.png);
             }
 
             .bottomRight{
@@ -107,16 +135,41 @@
                 font-family: monospace;
                 font-size: 14pt;
                 margin: 2px 0 20px 25px;
-                height: 16pt;
+                height: 32pt;
                 white-space: pre;
-            }
-            hr{
-                margin: 40px 0 20px -20px;
             }
             .delete{
                 background: transparent;
                 border: none;
             }
+            #DisplayStoredData{
+                display: none;
+                overflow-y: auto;
+                background-color: white;
+                margin:0;
+                grid-column: 1 / 5;
+                grid-row: 2 / 3;
+            }
+            #StoredData>li:first-child{
+                padding: 0px 0 0 10px;
+                font-weight: bold;
+            }
+            #StoredData>li:not(:first-child){
+                padding: 10px 0 0 10px;
+                font-weight: bold;
+            }
+            #StoredData>li>li{
+                padding-left: 20px;
+                font-weight: normal;
+            }
+            #StoredData>li>li>li{
+                padding-left: 40px;
+                text-transform: capitalize;
+            }
+            #StoredData>li>li>li>li{
+                padding-left: 60px;
+            }
+
 
             #Wait {
                 border: transparent !important;
@@ -159,33 +212,41 @@
         </style>
     </head>
     <body>
-        <header>Capture GPS location <span class="version">v8</span><span id="MenuButton">≡</span></header>
         <div class="container">
-            <p>Welcome back <span id="DisplayUserId"></span></p>
-            
-            <label for="CaseNum">CaseNum *</label>
-            <input id="CaseNum" type="text" />
-            <br/>
-            <label for="Decedent">Decedent's name</label>
-            <input id="Decedent" type="text" />
-            <br/>
-            <label for="Incident">Get GPS coordinates for:</label>
-            <button id="Incident" type="button"  class="GPSPin">Incident location</button>
-            <button id="DeleteIncident" type="button" data-button="incident" class="delete"><img src="delete.png" alt="Delete incident location" data-button="incident"/></button>
-            <p id="LocationIncident" class="loc" data-button="incident"></p>
-            <button id="Home" type="button" class="GPSPin">Decedent's home</button>
-            <button id="DeleteHome" type="button" data-button="home" class="delete"><img src="delete.png" alt="Delete incident location" data-button="home" /></button>
-            <p id="LocationHome" class="loc" data-button="home"></p>
-            <button id="Death" type="button" class="GPSPin">Death location </button>
-            <button id="DeleteDeath" type="button" data-button="death" class="delete"><img src="delete.png" alt="Delete incident location" data-button="death"/></button>
-            <p id="LocationDeath" class="loc" data-button="death"></p>
-            <hr />
-            
-            
-
-            <p id="StoredData"></p>
-            <br/><br/><br/><br/>
-            <p id="VQ" class="version bottomRight"></p>
+            <header>Capture GPS location <span class="version">v8</span><span id="MenuButton">≡</span></header>
+            <article class="caseData">
+                <p>Welcome back <span id="DisplayUserId"></span></p>
+                
+                <label for="CaseNum">CaseNum *</label>
+                <input id="CaseNum" type="text" />
+                <br/>
+                <label for="Decedent">Decedent's name</label>
+                <input id="Decedent" type="text" />
+                <br/>
+                <label for="Incident">Get GPS coordinates for:</label>
+                <button id="Incident" type="button"  class="GPSPin">Incident location</button>
+                <button id="DeleteIncident" type="button" data-button="incident" class="delete"><img src="delete.png" alt="Delete incident location" data-button="incident"/></button>
+                <p id="LocationIncident" class="loc" data-button="incident"></p>
+                <button id="Home" type="button" class="GPSPin">Decedent's home</button>
+                <button id="DeleteHome" type="button" data-button="home" class="delete"><img src="delete.png" alt="Delete incident location" data-button="home" /></button>
+                <p id="LocationHome" class="loc" data-button="home"></p>
+                <button id="Death" type="button" class="GPSPin">Death location </button>
+                <button id="DeleteDeath" type="button" data-button="death" class="delete"><img src="delete.png" alt="Delete incident location" data-button="death"/></button>
+                <p id="LocationDeath" class="loc" data-button="death"></p>
+            </article>
+            <article id="DisplayStoredData">
+                <label id="StoredDataLabel" for="StoredData"></label>
+                <ul id="StoredData"></ul>
+            </article>
+            <footer>
+                <p id="VQ" class="version bottomRight"></p>
+            </footer>
+            <div id="Menu">
+                <button id="ClearAll" type="button" class="menuItem">Clear all stored data</button>
+                <button id="SendStoredData" type="button" class="menuItem" >Send stored data</button>
+                <button id="ShowStoredData" type="button" class="menuItem" >Show stored data</button>
+            </div>
+            <div id="MenuOverlay"></div>
         </div>
         <dialog id="UserWelcome">
             <h2>Welcome</h2>
@@ -283,10 +344,7 @@
                 </g>
             </svg>
         </dialog>
-        <div id="Menu">
-            <button id="ClearAll" type="button" class="menuItem">Clear all stored data</button>
-            <button id="SendStoredData" type="button" class="menuItem" >Send stored data</button>
-        </div>
+        
     </body>
    
 </html>

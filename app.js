@@ -27,13 +27,19 @@ document.addEventListener("DOMContentLoaded", (e)=>{
     const hideWarning = document.getElementById("HideWarning");
 
     const sendStoredData = document.getElementById("SendStoredData");
+    const showStoredData = document.getElementById("ShowStoredData");
+    const storedDataLabel = document.getElementById("StoredDataLabel");
     const storedData = document.getElementById("StoredData");
+    const displayStoredData = document.getElementById("DisplayStoredData");
+
+
     const noLocalStorage = document.getElementById("NoLocalStorage");
     const wait = document.getElementById("Wait");
     const locDisplay = [locationIncident, locationHome, locationDeath];
 
     const menuButton = document.getElementById("MenuButton");
     const menu = document.getElementById("Menu");
+    const menuOverlay = document.getElementById("MenuOverlay");
 
     let data = {};
     let timeoutId = 0;
@@ -182,6 +188,8 @@ document.addEventListener("DOMContentLoaded", (e)=>{
             decedent.value = "";
             ClearLocations();
             clearAllWarning.close();
+            displayStoredData.style["display"] = "none";
+            showStoredData.textContent = "Show stored data";
         });
 
         hideWarning.addEventListener("click", (e) => {
@@ -202,13 +210,16 @@ document.addEventListener("DOMContentLoaded", (e)=>{
         }
 
         menuButton.addEventListener('click', (e)=>{
-            menu.style["display"]= menu.style["display"] == "block" ? "none" : "block";
+            let displayStyle = menu.style["display"] == "block" ? "none" : "block"
+            menu.style["display"]= displayStyle;
+            menuOverlay.style["display"]= displayStyle;
             e.stopImmediatePropagation();
             return false;
         });
 
         document.body.addEventListener('click', (e)=>{
             menu.style["display"]= "none";
+            menuOverlay.style["display"]= "none";
         });
     }
     else{
@@ -232,7 +243,51 @@ document.addEventListener("DOMContentLoaded", (e)=>{
     }
 
     sendStoredData.addEventListener("click", (e)=>{
-        storedData.textContent = window.localStorage.getItem("cases");
+        alert('ToDo: Send the stored data to the server');
+    });
+
+    showStoredData.addEventListener("click", (e)=>{
+        storedData.innerHTML = "";
+        if(showStoredData.textContent === "Show stored data"){
+            showStoredData.textContent = "Hide stored data"
+            displayStoredData.style["display"]= "block";
+            let txtData = window.localStorage.getItem("cases");
+            if(txtData === "{}"){
+                storedDataLabel.textContent = "There is no stored data";
+            }
+            else{
+                storedDataLabel.textContent = "Stored data:";
+                let jsonData = JSON.parse(txtData);
+                storedData.innerHTML = "";
+                for (const caseNumKey in jsonData) {
+                    let li = document.createElement("li");
+                    li.textContent = `CaseNum: ${caseNumKey}`;
+                    let decedentItem = document.createElement("li");
+                    decedentItem.textContent = `Decedent's Name: ${jsonData[caseNumKey]["Decedent"]}`;
+                    let locsItem = document.createElement("li");
+                    locsItem.textContent = "Locations:"
+                    for (const locationKey in jsonData[caseNumKey]["Locations"]) {
+                        let locItem = document.createElement("li");
+                        let latItem = document.createElement("li");
+                        let longItem = document.createElement("li");
+                        locItem.textContent = locationKey;
+                        let locs = jsonData[caseNumKey]["Locations"];
+                        latItem.textContent = `Latitud: ${locs[locationKey]["Latitud"]}`;
+                        longItem.textContent = `Longitud: ${locs[locationKey]["Longitud"]}`;
+                        
+                        locItem.append(latItem, longItem);
+                        locsItem.append(locItem);
+                    }
+                    li.append(decedentItem);
+                    li.append(locsItem);
+                    storedData.append(li);
+                }
+            }
+        }
+        else{
+            showStoredData.textContent = "Show stored data";
+            displayStoredData.style["display"]= "none";
+        }
     });
     
     document.getElementById("VQ").textContent = `VertiQ Software ${new Date().getFullYear()}`;
