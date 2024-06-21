@@ -32,6 +32,9 @@ document.addEventListener("DOMContentLoaded", (e)=>{
     const wait = document.getElementById("Wait");
     const locDisplay = [locationIncident, locationHome, locationDeath];
 
+    const menuButton = document.getElementById("MenuButton");
+    const menu = document.getElementById("Menu");
+
     let data = {};
     let timeoutId = 0;
 
@@ -197,6 +200,16 @@ document.addEventListener("DOMContentLoaded", (e)=>{
         function error() {
             lat.textContent = "Unable to retrieve your location";
         }
+
+        menuButton.addEventListener('click', (e)=>{
+            menu.style["display"]= menu.style["display"] == "block" ? "none" : "block";
+            e.stopImmediatePropagation();
+            return false;
+        });
+
+        document.body.addEventListener('click', (e)=>{
+            menu.style["display"]= "none";
+        });
     }
     else{
         noLocalStorage.showModal();

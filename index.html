@@ -31,7 +31,50 @@
             .container{
                 padding-left: 20px;
             }
+            .version{
+                font-size: 10pt;
+                margin: 2px 8px 2px 0;
+            }
+            #MenuButton{
+                font-size: 18pt;
+                position: absolute;
+                right:0;
+                padding: 0 8px 0 8px;
+                cursor: pointer;
+            }
+            #Menu{
+                display: none;
+                position: absolute;
+                right: 0;
+                top:44px;
+                background-color: white;
+                border: 1px solid gray;
+                height: calc(100vh - 44px);
+            }
+            .menuItem{
+                display: block;
+                border: 0 solid gray;
+                border-bottom: 1px solid gray;
+                width: 200px;
+                margin: 0;
+                padding: 10px 0 10px 30px;
+                background-color: white;
+                text-align: left;
+                background-position: 6px 12px;
+                background-repeat: no-repeat;
+            }
+            #ClearAll{
+                background-image: url(delete.png);
+            }
+            #SendStoredData{
+                background-image: url(upload.png);
+            }
 
+            .bottomRight{
+                position: absolute;
+                bottom: 0;
+                right: 0;
+            }
             #ClearAllWarning{
                 border:0;
                 border-top: solid rgb(245, 111, 111) 25px ;
@@ -116,7 +159,7 @@
         </style>
     </head>
     <body>
-        <header>Capture GPS location</header>
+        <header>Capture GPS location <span class="version">v8</span><span id="MenuButton">≡</span></header>
         <div class="container">
             <p>Welcome back <span id="DisplayUserId"></span></p>
             
@@ -138,15 +181,11 @@
             <p id="LocationDeath" class="loc" data-button="death"></p>
             <hr />
             
-            <input id="ClearAll" type="button" value="Clear all stored data" />
-            <br />
-            <br />
-            <input id="SendStoredData" type="button" value="Send stored data"  />
+            
 
             <p id="StoredData"></p>
             <br/><br/><br/><br/>
-            <p >Version: 7</p>
-            <p id="VQ"></p>
+            <p id="VQ" class="version bottomRight"></p>
         </div>
         <dialog id="UserWelcome">
             <h2>Welcome</h2>
@@ -244,6 +283,10 @@
                 </g>
             </svg>
         </dialog>
+        <div id="Menu">
+            <button id="ClearAll" type="button" class="menuItem">Clear all stored data</button>
+            <button id="SendStoredData" type="button" class="menuItem" >Send stored data</button>
+        </div>
     </body>
    
 </html>
