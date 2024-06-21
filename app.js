@@ -111,40 +111,32 @@ document.addEventListener("DOMContentLoaded", (e)=>{
         }
 
         incident.addEventListener("click", (e) => {
-            timeoutId = setTimeout(showWaiting(), 800);
-            setTimeout(()=>{navigator.geolocation.getCurrentPosition(incidentLocation, error)}, 6000);
-            //navigator.geolocation.getCurrentPosition(incidentLocation, error);
+            PreLocationCall("incident", locationIncident);
         });
         home.addEventListener("click", (e) => {
-            timeoutId = setTimeout(showWaiting(), 800);
-            navigator.geolocation.getCurrentPosition(homeLocation, error);
+            PreLocationCall("home", locationHome);
         });
         death.addEventListener("click", (e) => {
-            timeoutId = setTimeout(showWaiting(), 800);
-            navigator.geolocation.getCurrentPosition(deathLocation, error);
+            PreLocationCall("death", locationDeath);
         });
 
-
-        function incidentLocation(position) {
-            StoreLocation("incident", locationIncident, position.coords.latitude, position.coords.longitude);
-        }
-
-        function homeLocation(position) {
-            StoreLocation("home", locationHome, position.coords.latitude, position.coords.longitude);
-        }
-
-        function deathLocation(position) {
-            StoreLocation("death", locationDeath, position.coords.latitude, position.coords.longitude);
-        }
-            
-        function StoreLocation(type, locationDisplay, latitude, longitude){
-            clearTimeout(timeoutId);
-            wait.close(); 
-
+        function PreLocationCall(locationName, locationCallback){
             if(caseNum.value === ""){
                 warningNoCase.showModal();
                 return;
             }
+            timeoutId = setTimeout(showWaiting(), 800);
+            navigator.geolocation.getCurrentPosition(
+                (position) =>{
+                        StoreLocation(locationName, locationCallback, position.coords.latitude, position.coords.longitude);
+                }, error
+            );
+        }
+
+        function StoreLocation(type, locationDisplay, latitude, longitude){
+            clearTimeout(timeoutId);
+            wait.close(); 
+
             locationDisplay.textContent = FormatLatLong(latitude, longitude);
             data = JSON.parse(window.localStorage.getItem("cases"));
 

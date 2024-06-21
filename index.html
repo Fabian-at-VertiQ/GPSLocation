@@ -106,7 +106,12 @@
                 transform: rotate(-15deg);
                 transform-origin: 25px 36px;
             }
-
+            #shadow{
+                stroke-width:4;
+                stroke: gray;
+                stroke-linecap: square;
+                stroke-opacity:0.5;
+            }
 
         </style>
     </head>
@@ -140,7 +145,7 @@
 
             <p id="StoredData"></p>
             <br/><br/><br/><br/>
-            <p>Version: 5</p>
+            <p>Version: 6</p>
         </div>
         <dialog id="UserWelcome">
             <h2>Welcome</h2>
@@ -166,6 +171,32 @@
         <dialog id="Wait">
             <svg id="WaitingGPSSignal" viewBox="-50 -100 200 200" preserveAspectRatio="xMinYMin" xmlns="http://www.w3.org/2000/svg">
                 <g id="satellite">
+                    <g id="shadow">
+                        <g id="base">
+                            <path
+                                d ="M15,40
+                                    l-10,30
+                                    l15,0
+                                    l-2,-30
+                                    z">
+                            </path>
+                            <rect 
+                                x="2"
+                                y="70"
+                                width="21"
+                                height="2">
+                            </rect>
+                        </g>
+                        <g class="rotating-dish" >
+                            <path d="M32,30
+                                     l8 6 -8 6" />
+                            <circle cx="40" cy="36" r="2" />
+                            <path 
+                                d = "M32,12
+                                     a20,25 0 1,0 0,50
+                                     M32,12 l0,50" />
+                        </g>    
+                    </g>
                     <g id="base">
                         <path
                             d ="M15,40
