@@ -222,4 +222,5 @@ document.addEventListener("DOMContentLoaded", (e)=>{
         storedData.textContent = window.localStorage.getItem("cases");
     });
     
+    document.getElementById("VQ").textContent = `VertiQ Software ${new Date().getFullYear()}`;
 });
