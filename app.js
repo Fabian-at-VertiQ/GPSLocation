@@ -71,6 +71,8 @@ document.addEventListener("DOMContentLoaded", (e)=>{
         }
 
         caseNum.addEventListener("change", (e)=>{
+            decedent.value = "";
+            ClearLocations();
             //check if the case already has data, if it does, show it
             data = JSON.parse(window.localStorage.getItem("cases"));
             let tmpCaseNum = e.target.value;
@@ -85,13 +87,6 @@ document.addEventListener("DOMContentLoaded", (e)=>{
                         }
                     }
                 }
-                else{
-                    ClearLocations()
-                }
-            }
-            else{
-                decedent.value = "";
-                ClearLocations();
             }
         });
 

@@ -1,4 +1,4 @@
-const cacheName = "GPS-v8";
+const cacheName = "GPS-v1.0";
 const appShellFiles = [
   "/index.html",
   "/app.js",

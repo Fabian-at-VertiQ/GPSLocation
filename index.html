@@ -36,9 +36,25 @@
                 grid-row: 1 /1;
             }
 
-            label{
+            #WelcomeBack, #WelcomeBack>span{
+                font-size: 16pt;
+            }
+            #UserWelcome>label{
+                display: block;
+            }
+            #UserWelcome>input{
+                display: block;
+                margin: 5px 0 5px 0;
+            }
+            #UserWelcome>p{
+                margin: 2px 0 40px 0;
+                font-size: 9pt;
+            }
+
+            .caseData>label{
                 display:block;
                 margin-top:20px;
+                width: 200px;
             }
 
             .caseData{
@@ -88,6 +104,11 @@
                 background-position: 6px 12px;
                 background-repeat: no-repeat;
             }
+            .dialog{
+                border: 0;
+                border-top: 25px solid rgb(0, 69, 230) ;
+                max-width: 80vw;
+            }
             #ClearAll{
                 background-image: url(delete.png);
             }
@@ -103,6 +124,11 @@
                 bottom: 0;
                 right: 0;
             }
+            .dlgBottomRight{
+                position: absolute;
+                bottom: 10px;
+                right: 10px;
+            }
             #ClearAllWarning{
                 border:0;
                 border-top: solid rgb(245, 111, 111) 25px ;
@@ -113,6 +139,10 @@
                 margin: 20px 10px 5px 10px;
             }
 
+            #ClearAllWarning label{
+                display: block;
+                margin-bottom: 20px;
+            }
             ::backdrop {
                 background-color: rgb(107, 93, 102);
                 opacity: 0.60;
@@ -128,14 +158,14 @@
                 height: 30px;
                 width: 170px;
                 text-align:left;
-                margin-top:20px;
+                margin-top:5px;
                 display:inline;
             }
             .loc{
                 font-family: monospace;
                 font-size: 14pt;
-                margin: 2px 0 20px 25px;
-                height: 32pt;
+                margin: 2px 0 5px 25px;
+                height: 40pt;
                 white-space: pre;
             }
             .delete{
@@ -147,14 +177,15 @@
                 overflow-y: auto;
                 background-color: white;
                 margin:0;
+                padding-left: 20px;
                 grid-column: 1 / 5;
                 grid-row: 2 / 3;
             }
-            #StoredData>li:first-child{
-                padding: 0px 0 0 10px;
-                font-weight: bold;
-            }
-            #StoredData>li:not(:first-child){
+            #StoredData{
+                padding: 0 0 0 10px;
+                margin: 0;
+            } 
+            #StoredData>li{
                 padding: 10px 0 0 10px;
                 font-weight: bold;
             }
@@ -213,9 +244,9 @@
     </head>
     <body>
         <div class="container">
-            <header>Capture GPS location <span class="version">v8</span><span id="MenuButton">≡</span></header>
+            <header>Capture GPS location <span class="version">v1.0</span><span id="MenuButton">≡</span></header>
             <article class="caseData">
-                <p>Welcome back <span id="DisplayUserId"></span></p>
+                <p id="WelcomeBack">Welcome back <span id="DisplayUserId"></span></p>
                 
                 <label for="CaseNum">CaseNum *</label>
                 <input id="CaseNum" type="text" />
@@ -248,26 +279,30 @@
             </div>
             <div id="MenuOverlay"></div>
         </div>
-        <dialog id="UserWelcome">
+        <dialog id="UserWelcome" class="dialog">
             <h2>Welcome</h2>
-            <label for="UserId">Please enter your name to continue, this will help to identify the captured locations when syncing them back into the application. *</label>
+            <label for="UserId">Please enter your name to continue *</label>
             <input id="UserId" type="text" required />
-            <input id="CloseWelcome" type="button" value="Close" />
+            <p>Your name will help to identify the captured locations<br/> when syncing them back into the application.</p>
+            <button id="CloseWelcome" type="button" class="dlgBottomRight">Close</button>
         </dialog>
 
-        <dialog id="WarningNoCase">
+        <dialog id="WarningNoCase" class="dialog">
             <h2>Please enter a CaseNum to be use as a reference before capturing a location!</h2>
-            <button id="HideWarningNoCase" type="button">Close</button>
+            <br/>
+            <button id="HideWarningNoCase" type="button" class="dlgBottomRight">Close</button>
         </dialog>
         <dialog id="ClearAllWarning">
             <label for="ResetStorage">You are about to delete all stored locations on this device<br/>This action cannot be undone</label>
-            <button id="HideWarning" type="button">Cancel</button>
-            <button id="ResetStorage" type="button">Clear All</button>
+            <div class="dlgBottomRight">
+                <button id="HideWarning" type="button">Cancel</button>
+                <button id="ResetStorage" type="button">Clear All</button>
+            </div>
         </dialog>    
         
-        <dialog id="NoLocalStorage">
+        <dialog id="NoLocalStorage" class="dialog">
             <h2>You cannot use this app on your device.</h2>
-                <label>Your device/browser current configuration does not allow to store data while off-line.</label>
+            <label>Your device/browser current configuration does not allow to store data while off-line.</label>
         </dialog>
         <dialog id="Wait">
             <svg id="WaitingGPSSignal" viewBox="-50 -100 200 200" preserveAspectRatio="xMinYMin" xmlns="http://www.w3.org/2000/svg">
