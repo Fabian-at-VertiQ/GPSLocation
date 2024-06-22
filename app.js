@@ -15,9 +15,7 @@ document.addEventListener("DOMContentLoaded", (e)=>{
     const closeWelcome = document.getElementById("CloseWelcome");
     const userId = document.getElementById("UserId");
     const displayUserId = document.getElementById("DisplayUserId");
-    const userIdRequired = document.getElementById("UserIdRequired");
-
-
+    
     const warningNoCase = document.getElementById("WarningNoCase");  
     const hideWarningNoCase = document.getElementById("HideWarningNoCase");  
 
@@ -129,10 +127,10 @@ document.addEventListener("DOMContentLoaded", (e)=>{
                 warningNoCase.showModal();
                 return;
             }
-            timeoutId = setTimeout(showWaiting(), 800);
+            timeoutId = setTimeout(showWaiting(), 1200);
             navigator.geolocation.getCurrentPosition(
                 (position) =>{
-                        StoreLocation(locationName, locationCallback, position.coords.latitude, position.coords.longitude);
+                    StoreLocation(locationName, locationCallback, position.coords.latitude, position.coords.longitude);
                 }, error
             );
         }
@@ -140,6 +138,9 @@ document.addEventListener("DOMContentLoaded", (e)=>{
         function StoreLocation(type, locationDisplay, latitude, longitude){
             clearTimeout(timeoutId);
             wait.close(); 
+            if(caseNum.value == ""){
+                return;
+            }
 
             locationDisplay.textContent = FormatLatLong(latitude, longitude);
             data = JSON.parse(window.localStorage.getItem("cases"));
