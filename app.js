@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", (e)=>{
                 warningNoCase.showModal();
                 return;
             }
-            timeoutId = setTimeout(showWaiting(), 1200);
+            timeoutId = setTimeout(showWaiting(), 1500);
             navigator.geolocation.getCurrentPosition(
                 (position) =>{
                     StoreLocation(locationName, locationCallback, position.coords.latitude, position.coords.longitude);
