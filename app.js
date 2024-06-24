@@ -101,9 +101,11 @@ document.addEventListener("DOMContentLoaded", (e)=>{
                 let p = document.querySelector(`p[data-button="${button}"`);
                 if(p.textContent !== ""){
                     p.textContent = "";
-                    data = JSON.parse(window.localStorage.getItem("cases"));
-                    delete data[caseNum.value]["Locations"][button];
-                    window.localStorage.setItem("cases", JSON.stringify(data));
+                    if(caseNum.value !== ""){
+                        data = JSON.parse(window.localStorage.getItem("cases"));
+                        delete data[caseNum.value]["Locations"][button];
+                        window.localStorage.setItem("cases", JSON.stringify(data));
+                    }
                 }
             });
         });
@@ -127,7 +129,7 @@ document.addEventListener("DOMContentLoaded", (e)=>{
                 warningNoCase.showModal();
                 return;
             }
-            timeoutId = setTimeout(showWaiting(), 1500);
+            timeoutId = setTimeout(showWaiting, 1000);
             navigator.geolocation.getCurrentPosition(
                 (position) =>{
                     StoreLocation(locationName, locationCallback, position.coords.latitude, position.coords.longitude);
